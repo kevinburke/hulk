@@ -16,7 +16,10 @@
      */
     var convertMapToHTML = function(data) {
         if (typeof data === "string") {
-            return data;
+            valueHtml = $(document.createElement('input'));
+            valueHtml.addClass('hulk-map-value');
+            valueHtml.attr('value', data);
+            return valueHtml;
         }
 
         var map = $(document.createElement('div'));
@@ -30,14 +33,7 @@
             keyHtml.attr('value', key);
             pair.append(keyHtml);
 
-            var valueHtml;
-            if (typeof data[key] === "string") {
-                valueHtml = $(document.createElement('input'));
-                valueHtml.addClass('hulk-map-value');
-                valueHtml.attr('value', convertMapToHTML(data[key]));
-            } else {
-                valueHtml = convertMapToHTML(data[key]);
-            }
+            valueHtml = convertMapToHTML(data[key]);
             pair.append(valueHtml);
 
             map.append(pair);

@@ -9,6 +9,10 @@
         return button;
     };
 
+    var attachSaveHandler = function(button, callback) {
+        $(button).on('click', callback);
+    };
+
     /**
      * Convert a JSON object into HTML
      *
@@ -41,9 +45,19 @@
         return map;
     };
 
+    var reassembleJSON = function(html) {
+        console.log("reassembling.");
+        return {};
+    };
+
     $.hulk = function(selector, data, callback) {
         var html = convertMapToHTML(data);
-        html.append(getSaveButton());
+        var button = getSaveButton();
+        attachSaveHandler(button, function() {
+            var newData = reassembleJSON($(selector));
+            callback(newData);
+        });
+        html.append(button);
         $(selector).html(html);
     };
 }(jQuery));

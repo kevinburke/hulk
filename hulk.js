@@ -23,7 +23,8 @@
      * This function calls itself recursively
      */
     var convertMapToHTML = function(data) {
-        if (typeof data === "string" || typeof data === "number") {
+        var type = typeof data;
+        if (type === "string" || type === "number" || type === "boolean" || data === null) {
             valueHtml = $(document.createElement('input'));
             valueHtml.addClass('hulk-map-value');
             valueHtml.attr('value', data);
@@ -71,9 +72,32 @@
 
         if (html.hasClass('hulk-map-value')) {
             var value = html.val();
+
+            // XXX: the JSON specification allows for fractions and exponents
             if (isNumber(value)) {
                 return parseFloat(value);
             }
+
+            if (value === "true") {
+                return true;
+            }
+            if (value === "false") {
+                return false;
+            }
+
+            /**
+             * Note: there's some data loss here as we cannot detect between
+             * the empty string and null. In theory we could attach a data-*
+             * attribute to the input and use that but you'd still break if the
+             * user voided a field while editing the JSON.
+             *
+             * XXX Probably the best thing to do here is allow the user to
+             * pick what they want (empty string or null) here.
+             */
+            if (value === null || value === "null" || value.length === 0) {
+                return null;
+            }
+
             return html.val();
         }
 

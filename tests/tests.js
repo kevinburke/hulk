@@ -1,9 +1,5 @@
 module("general");
 
-compare = function(a, b) {
-    return JSON.stringify(a) === JSON.stringify(b);
-}
-
 var d = {
   'foo': 'bar',
   'blah': {
@@ -26,7 +22,7 @@ test("test updating works", function() {
 });
 
 module("specification", {
-    setup: function() {
+    teardown: function() {
         $('#hulk').html('')
     }
 });
@@ -72,3 +68,32 @@ test("an empty list is returned", function() {
     var e = $.hulkSmash('#hulk');
     ok(compare(e, []), "expected an empty list [] but got " + JSON.stringify(e));
 });
+
+test("test a list with items", function() {
+    var array = ["foo", 8, null, "seven", true];
+    $.hulk('#hulk', array);
+    var e = $.hulkSmash('#hulk');
+    ok(compare(e, array), "expected the list " + JSON.stringify(array) +
+        " but got " + JSON.stringify(e));
+});
+
+test("a nested list", function() {
+    var array = ["foo", ["blah", 8, 22.4], true];
+    $.hulk('#hulk', array);
+    var e = $.hulkSmash('#hulk');
+    ok(compare(e, array), "expected the list " + JSON.stringify(array) +
+        " but got " + JSON.stringify(e));
+});
+
+test("nest lists and dictionaries", function() {
+    var object = {"b": "c", "foo": ["blah", 8, 22.4, {"a": "b"}], "keybar": [] };
+    $.hulk('#hulk', object);
+    var e = $.hulkSmash('#hulk');
+    ok(compare(e, object), "expected the list " + JSON.stringify(object) +
+        " but got " + JSON.stringify(e));
+});
+
+compare = function(a, b) {
+    return JSON.stringify(a) === JSON.stringify(b);
+}
+

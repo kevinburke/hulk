@@ -67,26 +67,37 @@
     /**
      * this function calls itself recursively
      *
-     * input: a JQuery object
-     * output: the code below it serialized
+     * input: a JQuery object (the editor in JSON)
+     * output: a JSON object
      */
     var reassembleJSON = function(html) {
 
+        var mapChildren = html.children('.hulk-map');
+        if (mapChildren.length > 0) {
+            return reassembleJSON(mapChildren);
+        }
+
         var mapItems = html.children('.hulk-map-pair');
-        if (mapItems.length) {
+        if (mapItems.length > 0) {
             var d = {};
             mapItems.each(function(index, element) {
                 var $element = $(element);
                 var key = $element.children('.hulk-map-key');
+                // XXX if multiple elements have the same key, last one wins.
+                // what should actually be done here? warn?
                 d[key.val()] = reassembleJSON($element.children('.hulk-map-value-container'));
             });
             return d;
         }
 
-        var arrayItems = html.children('.hulk-array');
-        if (arrayItems.length) {
+        var arrayChildren = html.children('.hulk-array');
+        if (arrayChildren.length > 0) {
+            return reassembleJSON(arrayChildren);
+        }
+
+        if (html.hasClass('hulk-array')) {
             var array = [];
-            arrayItems.children('.hulk-array-element').each(function(index, element) {
+            html.children('.hulk-array-element').each(function(index, element) {
                 array.push(reassembleJSON($(element)));
             });
             return array;
@@ -133,6 +144,7 @@
             return reassembleJSON(html.children('.hulk-map-value'));
         }
 
+        console.log("returning nothing");
         return {};
     };
 
@@ -152,6 +164,7 @@
         });
         $element.html(html);
         $element.append(button);
+        return $element;
     };
 
     $.hulkSmash = function(selector) {

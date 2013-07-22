@@ -13,13 +13,17 @@
         $(button).on('click', callback);
     };
 
+    var isNumber = function(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+
     /**
      * Convert a JSON object into HTML
      *
      * This function calls itself recursively
      */
     var convertMapToHTML = function(data) {
-        if (typeof data === "string") {
+        if (typeof data === "string" || typeof data === "number") {
             valueHtml = $(document.createElement('input'));
             valueHtml.addClass('hulk-map-value');
             valueHtml.attr('value', data);
@@ -53,8 +57,6 @@
      * output: the code below it serialized
      */
     var reassembleJSON = function(html) {
-        console.log(html.html());
-        console.log(html.is("div"));
 
         var dictItems = html.children('.hulk-map-pair');
         if (dictItems.length) {
@@ -68,6 +70,10 @@
         }
 
         if (html.hasClass('hulk-map-value')) {
+            var value = html.val();
+            if (isNumber(value)) {
+                return parseFloat(value);
+            }
             return html.val();
         }
 

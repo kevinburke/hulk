@@ -8,8 +8,22 @@ module.exports = function(grunt) {
             "unused": true,
             "trailing": true
         }
+      },
+      uglify: {
+        options: {
+            mangle: {
+                except: ['jQuery']
+            },
+            compress: true
+        },
+        my_target: {
+            files: {
+                'hulk.min.js': ['hulk.js']
+            }
+        }
       }
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 };

@@ -15,7 +15,7 @@
 
     var isNumber = function(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
-    }
+    };
 
     /**
      * Convert a JSON object into HTML
@@ -25,7 +25,7 @@
     var convertMapToHTML = function(data) {
         var type = typeof data;
         if (type === "string" || type === "number" || type === "boolean" || data === null) {
-            valueHtml = $(document.createElement('input'));
+            var valueHtml = $(document.createElement('input'));
             valueHtml.addClass('hulk-map-value');
             valueHtml.attr('value', data);
             return valueHtml;

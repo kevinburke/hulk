@@ -1,4 +1,8 @@
-module("general");
+module("general", {
+    teardown: function() {
+        $('#hulk').html('')
+    }
+});
 
 var d = {
   'foo': 'bar',
@@ -7,17 +11,18 @@ var d = {
     'bags': 782.3
   }
 };
+
 test("test dictionary", function() {
-    var map = convertMapToHTML(d);
-    var e = reassembleJSON(map);
+    $.hulk('#hulk', d);
+    var e = $.hulkSmash('#hulk');
     ok(compare(d, e), "original dict was " + JSON.stringify(d) + "output was" + JSON.stringify(e));
 });
 
-test("test updating works", function() {
-    var map = convertMapToHTML(d);
+test("updating an element should update the resulting value", function() {
+    var map = $.hulk('#hulk', d);
     var bar = map.find('.hulk-map-value').first();
     bar.val('new-value');
-    e = reassembleJSON(map);
+    var e = $.hulkSmash('#hulk');
     ok(e['foo'] === 'new-value', "value should be new-value, instead it is " + e['foo']);
 });
 

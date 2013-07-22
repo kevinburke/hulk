@@ -1,4 +1,4 @@
-//(function($) {
+(function($) {
     /**
      * Return a jQuery element for a save button
      */
@@ -172,4 +172,4 @@
     $.hulkSmash = function(selector) {
         return reassembleJSON($(selector));
     };
-//}(jQuery));
+}(jQuery));

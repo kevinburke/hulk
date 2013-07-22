@@ -1,4 +1,4 @@
-(function($) {
+//(function($) {
     /**
      * Return a jQuery element for a save button
      */
@@ -69,21 +69,29 @@
             return html.val();
         }
 
-        return {};
+        // XXX. This is to fix the empty string case
+        return reassembleJSON(html.children());
     };
 
     $.hulk = function(selector, data, callback) {
+        var $element = $(selector);
+        if ($element.length === 0) {
+            console.error("Attempting to hulk-ify element with selector " +
+                selector + " failed because the element does not exist. " +
+                "Quitting");
+            return;
+        }
         var html = convertMapToHTML(data);
         var button = getSaveButton();
         attachSaveHandler(button, function() {
-            var newData = reassembleJSON($(selector).children());
+            var newData = reassembleJSON($element.children());
             callback(newData);
         });
         html.append(button);
-        $(selector).html(html);
+        $element.html(html);
     };
 
     $.hulkSmash = function(selector) {
         return reassembleJSON($(selector));
     };
-}(jQuery));
+//}(jQuery));

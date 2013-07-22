@@ -17,3 +17,9 @@ test("test updating works", function() {
     e = reassembleJSON(map);
     ok(e['foo'] === 'new-value', "value should be new-value, instead it is " + e['foo']);
 });
+
+test("can handle bare strings", function() {
+    $.hulk('#hulk', 'a string');
+    var e = $.hulkSmash('#hulk');
+    ok(e === 'a string', "expected \"a string\" but got " + JSON.stringify(e));
+});

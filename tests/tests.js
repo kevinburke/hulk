@@ -66,3 +66,9 @@ test("an empty dict is still empty", function() {
     var e = $.hulkSmash('#hulk');
     ok(compare(e, {}), "expected {} but got " + JSON.stringify(e));
 });
+
+test("an empty list is returned", function() {
+    $.hulk('#hulk', []);
+    var e = $.hulkSmash('#hulk');
+    ok(compare(e, []), "expected an empty list [] but got " + JSON.stringify(e));
+});

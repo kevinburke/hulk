@@ -31,6 +31,19 @@
             return valueHtml;
         }
 
+        if (Object.prototype.toString.call(data) === '[object Array]') {
+            var array = $(document.createElement('div'));
+            array.addClass('hulk-array');
+            for (var i = 0; i < data.length; i++) {
+                var element = data[i];
+                var elementHtml = $(document.createElement('div'));
+                elementHtml.addClass('hulk-array-element');
+                elementHtml.html(convertMapToHTML(element));
+                array.append(elementHtml);
+            }
+            return array;
+        }
+
         var map = $(document.createElement('div'));
         map.addClass('hulk-map');
         for (var key in data) {
@@ -59,15 +72,24 @@
      */
     var reassembleJSON = function(html) {
 
-        var dictItems = html.children('.hulk-map-pair');
-        if (dictItems.length) {
+        var mapItems = html.children('.hulk-map-pair');
+        if (mapItems.length) {
             var d = {};
-            dictItems.each(function(index, element) {
+            mapItems.each(function(index, element) {
                 var $element = $(element);
                 var key = $element.children('.hulk-map-key');
                 d[key.val()] = reassembleJSON($element.children('.hulk-map-value-container'));
             });
             return d;
+        }
+
+        var arrayItems = html.children('.hulk-array');
+        if (arrayItems.length) {
+            var array = [];
+            arrayItems.children('.hulk-array-element').each(function(index, element) {
+                array.push(reassembleJSON($(element)));
+            });
+            return array;
         }
 
         if (html.hasClass('hulk-map-value')) {
@@ -101,6 +123,7 @@
             return html.val();
         }
 
+        // hack, merge this with the above conditional
         var valueChild = html.children('.hulk-map-value');
         if (valueChild.length) {
             return reassembleJSON(valueChild);

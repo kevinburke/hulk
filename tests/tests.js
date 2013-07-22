@@ -25,7 +25,7 @@ test("test updating works", function() {
     ok(e['foo'] === 'new-value', "value should be new-value, instead it is " + e['foo']);
 });
 
-module("manipulation", {
+module("specification", {
     setup: function() {
         $('#hulk').html('')
     }
@@ -43,7 +43,25 @@ test("ints are back to ints", function() {
     ok(e === 5, "expected 5 but got " + JSON.stringify(e));
 });
 
-test("an empty dict is returned", function() {
+test("booleans work", function() {
+    $.hulk('#hulk', true);
+    var e = $.hulkSmash('#hulk');
+    ok(e === true, "expected true but got " + JSON.stringify(e));
+});
+
+test("null works", function() {
+    $.hulk('#hulk', null);
+    var e = $.hulkSmash('#hulk');
+    ok(e === null, "expected null but got " + JSON.stringify(e));
+});
+
+test("an empty string returns null", function() {
+    $.hulk('#hulk', "");
+    var e = $.hulkSmash('#hulk');
+    ok(e === null, "expected null but got " + JSON.stringify(e));
+});
+
+test("an empty dict is still empty", function() {
     $.hulk('#hulk', {});
     var e = $.hulkSmash('#hulk');
     ok(compare(e, {}), "expected {} but got " + JSON.stringify(e));

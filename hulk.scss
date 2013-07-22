@@ -1,0 +1,17 @@
+/**
+ * This file contains layout instructions for Hulk text inputs
+ */
+.hulk-map-key, .hulk-map-value {
+    padding: 4px 6px;
+    margin: 0 10px 10px 10px;
+}
+
+.hulk-map-pair, .hulk-array {
+    margin-left: 30px;
+}
+
+.hulk-separator {
+    position: relative;
+    bottom: 5px;
+    display: inline-block;
+}

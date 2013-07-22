@@ -38,6 +38,7 @@
             pair.append(keyHtml);
 
             valueHtml = convertMapToHTML(data[key]);
+            valueHtml.addClass('hulk-map-value');
             pair.append(valueHtml);
 
             map.append(pair);
@@ -45,8 +46,29 @@
         return map;
     };
 
+    /**
+     * this function calls itself recursively
+     *
+     * input: a JQuery object
+     * output: the code below it serialized
+     */
     var reassembleJSON = function(html) {
-        console.log("reassembling.");
+
+        var dictItems = html.children('.hulk-map-pair');
+        if (dictItems.length) {
+            var d = {};
+            dictItems.each(function(index, element) {
+                var $element = $(element);
+                var key = $element.children('.hulk-map-key');
+                d[key.attr('value')] = reassembleJSON($element.children('.hulk-map-value'));
+            });
+            return d;
+        }
+
+        if (html.hasClass('hulk-map-value')) {
+            return html.attr('value');
+        }
+
         return {};
     };
 
@@ -59,5 +81,9 @@
         });
         html.append(button);
         $(selector).html(html);
+    };
+
+    $.hulkSmash = function(selector) {
+        return reassembleJSON($(selector));
     };
 }(jQuery));

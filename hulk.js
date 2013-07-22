@@ -60,13 +60,13 @@
             dictItems.each(function(index, element) {
                 var $element = $(element);
                 var key = $element.children('.hulk-map-key');
-                d[key.attr('value')] = reassembleJSON($element.children('.hulk-map-value'));
+                d[key.val()] = reassembleJSON($element.children('.hulk-map-value'));
             });
             return d;
         }
 
         if (html.hasClass('hulk-map-value')) {
-            return html.attr('value');
+            return html.val();
         }
 
         return {};
@@ -76,7 +76,7 @@
         var html = convertMapToHTML(data);
         var button = getSaveButton();
         attachSaveHandler(button, function() {
-            var newData = reassembleJSON($(selector));
+            var newData = reassembleJSON($(selector).children());
             callback(newData);
         });
         html.append(button);

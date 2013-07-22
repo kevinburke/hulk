@@ -1,13 +1,20 @@
+module("general");
+
+compare = function(a, b) {
+    return JSON.stringify(a) === JSON.stringify(b);
+}
+
 var d = {
   'foo': 'bar',
   'blah': {
-    'bab': 'c'
+    'bab': 'c',
+    'bags': 782.3
   }
 };
 test("test dictionary", function() {
     var map = convertMapToHTML(d);
     var e = reassembleJSON(map);
-    ok(JSON.stringify(d) === JSON.stringify(e), "original dict was " + JSON.stringify(d) + "output was" + JSON.stringify(e));
+    ok(compare(d, e), "original dict was " + JSON.stringify(d) + "output was" + JSON.stringify(e));
 });
 
 test("test updating works", function() {
@@ -18,8 +25,26 @@ test("test updating works", function() {
     ok(e['foo'] === 'new-value', "value should be new-value, instead it is " + e['foo']);
 });
 
+module("manipulation", {
+    setup: function() {
+        $('#hulk').html('')
+    }
+});
+
 test("can handle bare strings", function() {
     $.hulk('#hulk', 'a string');
     var e = $.hulkSmash('#hulk');
     ok(e === 'a string', "expected \"a string\" but got " + JSON.stringify(e));
+});
+
+test("ints are back to ints", function() {
+    $.hulk('#hulk', 5);
+    var e = $.hulkSmash('#hulk');
+    ok(e === 5, "expected 5 but got " + JSON.stringify(e));
+});
+
+test("an empty dict is returned", function() {
+    $.hulk('#hulk', {});
+    var e = $.hulkSmash('#hulk');
+    ok(compare(e, {}), "expected {} but got " + JSON.stringify(e));
 });

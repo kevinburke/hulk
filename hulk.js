@@ -56,6 +56,11 @@
                 keyHtml.attr('value', key);
                 pair.append(keyHtml);
 
+                var separator = $(document.createElement('p'));
+                separator.addClass('hulk-separator');
+                separator.text('=>');
+                pair.append(separator);
+
                 var valueHtml = convertMapToHTML(data[key]);
                 valueHtml.addClass('hulk-map-value-container');
                 pair.append(valueHtml);

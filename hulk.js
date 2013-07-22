@@ -38,7 +38,7 @@
             pair.append(keyHtml);
 
             valueHtml = convertMapToHTML(data[key]);
-            valueHtml.addClass('hulk-map-value');
+            valueHtml.addClass('hulk-map-value-container');
             pair.append(valueHtml);
 
             map.append(pair);
@@ -53,6 +53,8 @@
      * output: the code below it serialized
      */
     var reassembleJSON = function(html) {
+        console.log(html.html());
+        console.log(html.is("div"));
 
         var dictItems = html.children('.hulk-map-pair');
         if (dictItems.length) {
@@ -60,7 +62,7 @@
             dictItems.each(function(index, element) {
                 var $element = $(element);
                 var key = $element.children('.hulk-map-key');
-                d[key.val()] = reassembleJSON($element.children('.hulk-map-value'));
+                d[key.val()] = reassembleJSON($element.children('.hulk-map-value-container'));
             });
             return d;
         }
@@ -69,8 +71,16 @@
             return html.val();
         }
 
-        // XXX. This is to fix the empty string case
-        return reassembleJSON(html.children());
+        var valueChild = html.children('.hulk-map-value');
+        if (valueChild.length) {
+            return reassembleJSON(valueChild);
+        }
+
+        if (html.hasClass('hulk-map-value-container')) {
+            return reassembleJSON(html.children('.hulk-map-value'));
+        }
+
+        return {};
     };
 
     $.hulk = function(selector, data, callback) {
@@ -87,8 +97,8 @@
             var newData = reassembleJSON($element.children());
             callback(newData);
         });
-        html.append(button);
         $element.html(html);
+        $element.append(button);
     };
 
     $.hulkSmash = function(selector) {

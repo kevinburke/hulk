@@ -46,27 +46,38 @@
 
         var map = $(document.createElement('div'));
         map.addClass('hulk-map');
-        for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                var pair = $(document.createElement('div'));
-                pair.addClass('hulk-map-pair');
 
-                var keyHtml = $(document.createElement('input'));
-                keyHtml.addClass('hulk-map-key');
-                keyHtml.attr('value', key);
-                pair.append(keyHtml);
-
-                var separator = $(document.createElement('p'));
-                separator.addClass('hulk-separator');
-                separator.text('=>');
-                pair.append(separator);
-
-                var valueHtml = convertMapToHTML(data[key]);
-                valueHtml.addClass('hulk-map-value-container');
-                pair.append(valueHtml);
-
-                map.append(pair);
+        // ugh, http://stackoverflow.com/q/5467129/329700
+        var keys = [];
+        for (var k in data) {
+            if (data.hasOwnProperty(k)) {
+                keys.push(k);
             }
+        }
+
+        keys.sort();
+
+        for (var j = 0; j < keys.length; j++) {
+            var key = keys[j];
+            var value = data[key];
+            var pair = $(document.createElement('div'));
+            pair.addClass('hulk-map-pair');
+
+            var keyHtml = $(document.createElement('input'));
+            keyHtml.addClass('hulk-map-key');
+            keyHtml.attr('value', key);
+            pair.append(keyHtml);
+
+            var separator = $(document.createElement('p'));
+            separator.addClass('hulk-separator');
+            separator.text('=>');
+            pair.append(separator);
+
+            var valueHtml = convertMapToHTML(value);
+            valueHtml.addClass('hulk-map-value-container');
+            pair.append(valueHtml);
+
+            map.append(pair);
         }
         return map;
     };

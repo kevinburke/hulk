@@ -13,6 +13,25 @@
         $(button).on('click', callback);
     };
 
+    var attachCollapseHandler = function(button) {
+        $(button).on('click', function(e) {
+            e.preventDefault();
+            var value = $(button).next();
+            if ($(button).hasClass('collapsed')) {
+                // Expand it
+                $(button).text('Collapse');
+                $(value).slideDown('slow', function() {
+                    $(button).removeClass('collapsed');
+                });
+            } else {
+                $(value).slideUp('slow', function() {
+                    $(button).addClass('collapsed');
+                    $(button).text('Expand');
+                });
+            }
+        });
+    };
+
     var isNumber = function(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     };
@@ -79,6 +98,7 @@
                 var button = $(document.createElement('button'));
                 button.addClass('hulk-collapse-item');
                 button.text("Collapse");
+                attachCollapseHandler(button);
                 pair.append(button);
             }
             pair.append(valueHtml);

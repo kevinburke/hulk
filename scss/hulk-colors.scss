@@ -10,3 +10,18 @@
 .hulk-array-element > input {
     border: 1px solid blue;
 }
+
+// XXX pick better values here.
+$top: #fafafa;
+$bottom: #eaeaea;
+
+.hulk button {
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    background-image: linear-gradient($top, $bottom);
+
+    // XXX add hover, active states.
+    &:hover {
+        background-image: linear-gradient($top - #0f0f0f, $bottom - #0f0f0f);
+    }
+}

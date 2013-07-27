@@ -7,3 +7,10 @@
 
 .hulk-array-element > input {
   border: 1px solid blue; }
+
+.hulk button {
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  background-image: linear-gradient(#fafafa, #eaeaea); }
+  .hulk button:hover {
+    background-image: linear-gradient(#ebebeb, #dbdbdb); }

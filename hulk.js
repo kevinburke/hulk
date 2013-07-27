@@ -94,7 +94,7 @@
 
             var valueHtml = convertMapToHTML(value);
             valueHtml.addClass('hulk-map-value-container');
-            if (valueHtml.children('.hulk-map-pair').length > 0) {
+            if (valueHtml.children('.hulk-map-pair,.hulk-array-element').length > 0) {
                 var button = $(document.createElement('button'));
                 button.addClass('hulk-collapse-item');
                 button.text("Collapse");

@@ -17,6 +17,14 @@
   margin-bottom: 10px;
   margin-left: 10px; }
 
+/**
+ * Separate dictionary items in lists 
+ */
+.hulk-array-element > .hulk-map {
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #ccc; }
+
 .hulk-map-key {
   font-weight: bold; }
 
@@ -33,3 +41,12 @@
   background-image: linear-gradient(#fafafa, #eaeaea); }
   .hulk button:hover {
     background-image: linear-gradient(#ebebeb, #dbdbdb); }
+
+/**
+ * Separate dictionary items in lists 
+ */
+.hulk-array-element > .hulk-map {
+  border-bottom: 1px solid #ccc; }
+
+.hulk-array-element:last-child > .hulk-map {
+  border-bottom: none; }

@@ -31,7 +31,9 @@ module.exports = function(grunt) {
         sass: {
             dist: {
                 files: {
-                    'hulk-all.css': 'hulk-all.scss'
+                    'css/hulk-all.css': 'scss/hulk-all.scss',
+                    'css/hulk.css': 'scss/hulk.scss',
+                    'css/hulk-colors.css': 'scss/hulk-colors.scss',
                 }
             }
         },
@@ -40,6 +42,10 @@ module.exports = function(grunt) {
             scripts: {
                 files: 'hulk.js',
                 tasks: ['jshint', 'uglify']
+            },
+            css: {
+                files: '**/*.scss',
+                tasks: ['sass']
             }
         }
     });

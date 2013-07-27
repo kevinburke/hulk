@@ -75,6 +75,12 @@
 
             var valueHtml = convertMapToHTML(value);
             valueHtml.addClass('hulk-map-value-container');
+            if (valueHtml.children('.hulk-map-pair').length > 0) {
+                var button = $(document.createElement('button'));
+                button.addClass('hulk-collapse-item');
+                button.text("Collapse");
+                pair.append(button);
+            }
             pair.append(valueHtml);
 
             map.append(pair);
@@ -168,6 +174,7 @@
 
     $.hulk = function(selector, data, callback) {
         var $element = $(selector);
+        $element.addClass('hulk');
         if ($element.length === 0) {
             console.error("Attempting to hulk-ify element with selector " +
                 selector + " failed because the element does not exist. " +

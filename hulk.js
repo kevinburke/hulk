@@ -1,4 +1,5 @@
 (function($) {
+    var DEFAULT_SEPARATOR = "=>";
     /**
      * Return a jQuery element for a save button
      */
@@ -41,7 +42,18 @@
      *
      * This function calls itself recursively
      */
-    var convertMapToHTML = function(data) {
+    var convertMapToHTML = function(data, options) {
+        var separator;
+        if (typeof options === "undefined") {
+            separator = DEFAULT_SEPARATOR;
+        } else {
+            if (typeof options.separator !== "undefined") {
+                separator = options.separator;
+            } else {
+                separator = DEFAULT_SEPARATOR;
+            }
+        }
+
         var type = typeof data;
         if (type === "string" || type === "number" || type === "boolean" || data === null) {
             var valueInput = $(document.createElement('input'));
@@ -57,7 +69,7 @@
                 var element = data[i];
                 var elementHtml = $(document.createElement('div'));
                 elementHtml.addClass('hulk-array-element');
-                elementHtml.html(convertMapToHTML(element));
+                elementHtml.html(convertMapToHTML(element, options));
                 array.append(elementHtml);
             }
             return array;
@@ -87,12 +99,12 @@
             keyHtml.attr('value', key);
             pair.append(keyHtml);
 
-            var separator = $(document.createElement('p'));
-            separator.addClass('hulk-separator');
-            separator.text('=>');
-            pair.append(separator);
+            var separatorElement = $(document.createElement('p'));
+            separatorElement.addClass('hulk-separator');
+            separatorElement.text(separator);
+            pair.append(separatorElement);
 
-            var valueHtml = convertMapToHTML(value);
+            var valueHtml = convertMapToHTML(value, options);
             valueHtml.addClass('hulk-map-value-container');
             if (valueHtml.children('.hulk-map-pair,.hulk-array-element').length > 0) {
                 var button = $(document.createElement('button'));
@@ -192,7 +204,8 @@
         return {};
     };
 
-    $.hulk = function(selector, data, callback) {
+    $.hulk = function(selector, data, callback, options) {
+        // get option settings
         var $element = $(selector);
         $element.addClass('hulk');
         if ($element.length === 0) {
@@ -201,7 +214,7 @@
                 "Quitting");
             return;
         }
-        var html = convertMapToHTML(data);
+        var html = convertMapToHTML(data, options);
         var button = getSaveButton();
         attachSaveHandler(button, function() {
             var newData = reassembleJSON($element.children());

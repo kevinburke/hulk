@@ -20,7 +20,7 @@ $bottom: #eaeaea;
     border: 1px solid #ddd;
     background-image: linear-gradient($top, $bottom);
 
-    // XXX add hover, active states.
+    // XXX add active states, better button states.
     &:hover {
         background-image: linear-gradient($top - #0f0f0f, $bottom - #0f0f0f);
     }

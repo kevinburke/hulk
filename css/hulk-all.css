@@ -22,8 +22,7 @@
  */
 .hulk-array-element > .hulk-map {
   padding-bottom: 6px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid #ccc; }
+  margin-bottom: 16px; }
 
 .hulk-map-key {
   font-weight: bold; }

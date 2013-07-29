@@ -7,7 +7,7 @@ Hulk is an in-browser JSON editor. [View an example][example]
 ## Usage
 
 ```javascript
-$.hulk('#selector', {'foo': 'bar'}, function(data) {
+$.hulk('#selector', {foo: "bar"}, function(data) {
     console.log("Here's the updated data: " + data);
 });
 ```

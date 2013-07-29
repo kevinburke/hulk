@@ -152,7 +152,7 @@
         return pair;
     };
 
-    var createMapHTML = function(map, options) {
+    var createMapHTML = function(map, options, optionalKey) {
         var mapHTML = $(document.createElement('div'));
         mapHTML.addClass('hulk-map');
 
@@ -175,7 +175,8 @@
         }
         var addPairElement = $(document.createElement('button'));
         addPairElement.addClass('hulk-map-add-pair');
-        addPairElement.text('Add key/value pair');
+        var text = getAddElementText("key/value pair", optionalKey);
+        addPairElement.text(text);
         attachKeyValuePairHandler(addPairElement, options);
         mapHTML.append(addPairElement);
         return mapHTML;
@@ -230,7 +231,7 @@
         if (isArrayOfDictionaries(data)) {
             var addPairElement = $(document.createElement('button'));
             addPairElement.addClass('hulk-array-add-pair');
-            text = getAddElementText("key/value pair", optionalKey);
+            text = getAddElementText("object", optionalKey);
             addPairElement.text(text);
             attachAddKeyValuePairElementHandler(addPairElement, options);
             array.append(addPairElement);
@@ -289,7 +290,7 @@
 
         // Now that we've covered the other cases, only dictionaries should be
         // left, in theory.
-        return createMapHTML(data, options);
+        return createMapHTML(data, options, optionalKey);
     };
 
     /************  these functions take HTML and return JSON    ***************/

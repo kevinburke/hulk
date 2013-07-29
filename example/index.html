@@ -30,6 +30,7 @@
     <div class="row">
       <div class="span12">
         <h2>Here's some JSON</h2>
+        <p style="color: #a11; font-weight: bold; display: none;" id="observe">Check for the new values!</p>
         <textarea id="code-mirror"></textarea>
       </div>
     </div>
@@ -81,6 +82,9 @@
       $(function() {
         $.hulk('#hulk', d, function(data) {
             codeMirror.setValue(prettyPrint(data));
+            $('body').animate({'scrollTop': "0px"}, function() {
+              $("#observe").show();
+            });
           }, {
             'separator': '==>'
           }

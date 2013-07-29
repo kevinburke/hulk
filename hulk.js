@@ -139,7 +139,7 @@
         separatorElement.text(separator);
         pair.append(separatorElement);
 
-        var valueHTML = convertMapToHTML(value, options, key);
+        var valueHTML = convertJSONToHTML(value, options, key);
         valueHTML.addClass('hulk-map-value-container');
         if (valueHTML.children('.hulk-map-pair, .hulk-array-element').length > 0) {
             var button = $(document.createElement('button'));
@@ -190,7 +190,7 @@
     var createArrayElementHTML = function(element, options) {
         var elementHTML = $(document.createElement('div'));
         elementHTML.addClass('hulk-array-element');
-        elementHTML.html(convertMapToHTML(element, options));
+        elementHTML.html(convertJSONToHTML(element, options));
         return elementHTML;
     };
 
@@ -259,7 +259,7 @@
      * @param object|undefined options the user specified options
      * @param string optionalKey for dictionary values, pass in the associated key
      */
-    var convertMapToHTML = function(data, options, optionalKey) {
+    var convertJSONToHTML = function(data, options, optionalKey) {
         var maxInputTextLength = 80;
         var type = typeof data;
         // typeof null === "object", so we compare directly against null
@@ -409,7 +409,7 @@
                 "Quitting");
             return;
         }
-        var html = convertMapToHTML(data, options);
+        var html = convertJSONToHTML(data, options);
         var button = getSaveButton();
         attachSaveHandler(button, function() {
             var newData = reassembleJSON($element.children(), options);

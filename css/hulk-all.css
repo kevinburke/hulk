@@ -50,5 +50,9 @@
 .hulk-array-element > .hulk-map {
   border-bottom: 1px solid #ccc; }
 
-.hulk-array-element:last-child > .hulk-map {
+/*
+ * The last child is usually, but not always, the button. Need a better way to
+ * do this, maybe just give up on the visual separator.
+ */
+.hulk-array-element:nth-last-child(2) > .hulk-map {
   border-bottom: none; }

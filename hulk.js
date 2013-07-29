@@ -37,6 +37,9 @@
         });
     };
 
+    /**
+     * Add a handler to append a new element as HTML to the list
+     */
     var attachAddArrayElementHandler = function(button, options) {
         $(button).on('click', function(e) {
             e.preventDefault();
@@ -45,7 +48,10 @@
         });
     };
 
-    var attachKeyValuePairHandler = function(button, options) {
+    /**
+     * Add a handler to append a new dictionary as HTML to the list
+     */
+    var attachAddKeyValuePairElementHandler = function(button, options) {
         $(button).on('click', function(e) {
             e.preventDefault();
             var elementHTML = createArrayElementHTML({"": ""}, options);
@@ -184,7 +190,7 @@
             var addPairElement = $(document.createElement('button'));
             addPairElement.addClass('hulk-array-add-pair');
             addPairElement.text('Add key/value pair');
-            attachKeyValuePairHandler(addPairElement, options);
+            attachAddKeyValuePairElementHandler(addPairElement, options);
             array.append(addPairElement);
         } else {
             // Otherwise, you can only add new values.

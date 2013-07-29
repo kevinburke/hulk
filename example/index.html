@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+  <head>
+    <title>HULK</title>
+    <link rel='stylesheet' id='flatui-bootstrap.css-css'  href='bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='flatui-bootstrap-responsive.css-css'  href='bootstrap-responsive.min.css' type='text/css' media='all' />
+    <link rel="stylesheet" type="text/css" href="../css/hulk.css" />
+    <link rel="stylesheet" type="text/css" href="../css/hulk-colors.css" />
+    <script src="../tests/jquery.min.js"></script>
+    <script src="../hulk.js"></script>
+    <script>
+      $(function() {
+      var d = {
+        "teams": [
+          {
+            "name": "Oakland Athletics",
+            "id": 1,
+            "wins": 57,
+            "players": [
+              "Yoenis Cespedes",
+              "Seth Smith",
+              "Josh Reddick",
+              "Coco Crisp"
+            ]
+          },
+          {
+            "name": "San Francisco Giants",
+            "id": 2,
+            "wins": 48
+          }
+        ],
+        "name": "Major League Baseball"
+      };
+
+        
+        $.hulk('#hulk', d, function(data) {
+          console.log(data);
+          }, {
+          'separator': '==>'
+        });
+
+        // var e = $.hulkSmash('#hulk');
+        // console.log("\n\nFinal value is:");
+        // console.log(d);
+        // console.log(e);
+        // console.log(JSON.stringify(d) === JSON.stringify(e));
+      });
+    </script>
+  </head>
+  <body>
+    <h1>HULK</h1>
+    <div id="hulk">
+
+    </div>
+
+    <div class="row">
+      <div class="span12">
+      </div>
+    </div>
+  </body>
+</html>

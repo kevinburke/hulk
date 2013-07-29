@@ -45,7 +45,26 @@
         });
     };
 
+    var attachKeyValuePairHandler = function(button, options) {
+        $(button).on('click', function(e) {
+            e.preventDefault();
+            var elementHTML = createArrayElementHTML({"": ""}, options);
+            $(button).before(elementHTML);
+        });
+    };
+
     /**********************      Utilities      ******************************/
+
+    var getOptionOrDefault = function(options, optionName, defaultValue) {
+        if (typeof options === "undefined") {
+            return defaultValue;
+        }
+        if (typeof options[optionName] === "undefined") {
+            return defaultValue;
+        }
+        return options[optionName];
+    };
+
     /**
      * Detect whether a string is a number-ish value
      *
@@ -82,12 +101,68 @@
         }
     };
 
-    /*****************      Recursive Builder Functions      ******************/
+    /*********   These functions take JSON and return HTML     **********/
 
     /**
-     * Create HTML from a JSON array element
+     * Create HTML for a map key/value pair
+     */
+    var createKeyValuePairHTML = function(key, value, options) {
+        var separator = getOptionOrDefault(
+            options, "separator", DEFAULT_SEPARATOR);
+
+        var pair = $(document.createElement('div'));
+        pair.addClass('hulk-map-pair');
+
+        var keyHTML = $(document.createElement('input'));
+        keyHTML.addClass('hulk-map-key');
+        keyHTML.attr('value', key);
+        pair.append(keyHTML);
+
+        var separatorElement = $(document.createElement('p'));
+        separatorElement.addClass('hulk-separator');
+        separatorElement.text(separator);
+        pair.append(separatorElement);
+
+        var valueHTML = convertMapToHTML(value, options);
+        valueHTML.addClass('hulk-map-value-container');
+        if (valueHTML.children('.hulk-map-pair, .hulk-array-element').length > 0) {
+            var button = $(document.createElement('button'));
+            button.addClass('hulk-collapse-item');
+            button.text("Collapse");
+            attachCollapseHandler(button);
+            pair.append(button);
+        }
+        pair.append(valueHTML);
+        return pair;
+    };
+
+    var createMapHTML = function(map, options) {
+        var mapHTML = $(document.createElement('div'));
+        mapHTML.addClass('hulk-map');
+
+        // ugh, http://stackoverflow.com/q/5467129/329700
+        var keys = [];
+        for (var key in map) {
+            if (map.hasOwnProperty(key)) {
+                keys.push(key);
+            }
+        }
+
+        keys.sort();
+
+        for (var j = 0; j < keys.length; j++) {
+            var key = keys[j];
+            var value = map[key];
+            var pair = createKeyValuePairHTML(key, value, options);
+            mapHTML.append(pair);
+        }
+        return mapHTML;
+    };
+
+    /**
+     * Create HTML for a JSON array element
      *
-     * @return the element as HTML, plus whatever is inside it
+     * @return a jQuery object for the element, plus what's inside the element
      */
     var createArrayElementHTML = function(element, options) {
         var elementHTML = $(document.createElement('div'));
@@ -109,13 +184,14 @@
             var addPairElement = $(document.createElement('button'));
             addPairElement.addClass('hulk-array-add-pair');
             addPairElement.text('Add key/value pair');
+            attachKeyValuePairHandler(addPairElement, options);
             array.append(addPairElement);
         } else {
             // Otherwise, you can only add new values.
             var addRowElement = $(document.createElement('button'));
             addRowElement.addClass('hulk-array-add-row');
             addRowElement.text('Add element');
-            attachAddArrayElementHandler(addRowElement);
+            attachAddArrayElementHandler(addRowElement, options);
             array.append(addRowElement);
         }
         return array;
@@ -124,20 +200,12 @@
     /**
      * Convert a JSON object into HTML
      *
+     * This should handle most JSON objects, per the specification here:
+     * http://www.json.org/
+     *
      * This function calls itself recursively
      */
     var convertMapToHTML = function(data, options) {
-        var separator;
-        if (typeof options === "undefined") {
-            separator = DEFAULT_SEPARATOR;
-        } else {
-            if (typeof options.separator !== "undefined") {
-                separator = options.separator;
-            } else {
-                separator = DEFAULT_SEPARATOR;
-            }
-        }
-
         var type = typeof data;
         // typeof null === "object", so we compare directly against null
         if (type === "string" || type === "number" || type === "boolean" || data === null) {
@@ -147,56 +215,60 @@
             return valueInput;
         }
 
+        // XXX: the JSON specification allows for fractions and exponents.
+        // Handle them here.
+
         // javascript you're drunk. http://stackoverflow.com/a/4775737/329700
         if (Object.prototype.toString.call(data) === '[object Array]') {
             return createArrayHTML(data, options);
         }
 
         // Now that we've covered the other cases, only dictionaries should be
-        // left.
-        var map = $(document.createElement('div'));
-        map.addClass('hulk-map');
+        // left, in theory.
+        return createMapHTML(data, options);
+    };
 
-        // ugh, http://stackoverflow.com/q/5467129/329700
-        var keys = [];
-        for (var k in data) {
-            if (data.hasOwnProperty(k)) {
-                keys.push(k);
-            }
+    /************  these functions take HTML and return JSON    ***************/
+
+    /**
+     * Take a value and try to parse it into JSON data types
+     *
+     * For example, "true" => true
+     *
+     * @param string value
+     * @param object|undefined options
+     * @return The returned data type
+     */
+    var parseTextInput = function(value, options) {
+
+        // XXX: the JSON specification allows for fractions and exponents,
+        // handle them here.
+        if (isNumber(value)) {
+            return parseFloat(value);
         }
 
-        keys.sort();
-
-        for (var j = 0; j < keys.length; j++) {
-            var key = keys[j];
-            var value = data[key];
-            var pair = $(document.createElement('div'));
-            pair.addClass('hulk-map-pair');
-
-            var keyHtml = $(document.createElement('input'));
-            keyHtml.addClass('hulk-map-key');
-            keyHtml.attr('value', key);
-            pair.append(keyHtml);
-
-            var separatorElement = $(document.createElement('p'));
-            separatorElement.addClass('hulk-separator');
-            separatorElement.text(separator);
-            pair.append(separatorElement);
-
-            var valueHtml = convertMapToHTML(value, options);
-            valueHtml.addClass('hulk-map-value-container');
-            if (valueHtml.children('.hulk-map-pair,.hulk-array-element').length > 0) {
-                var button = $(document.createElement('button'));
-                button.addClass('hulk-collapse-item');
-                button.text("Collapse");
-                attachCollapseHandler(button);
-                pair.append(button);
-            }
-            pair.append(valueHtml);
-
-            map.append(pair);
+        if (value === "true") {
+            return true;
         }
-        return map;
+        if (value === "false") {
+            return false;
+        }
+
+        /**
+         * Note: there's some data loss here as we cannot detect between the
+         * empty string and null. In theory we could attach a data-* attribute
+         * to the input and use that but you'd still break if the user voided a
+         * field while editing the JSON.
+         */
+        if (value === null || value === "null") {
+            return null;
+        }
+        if (value.length === 0) {
+            var emptyString = getOptionOrDefault(options, "emptyString", false);
+            return emptyString === true ? "" : null;
+        }
+
+        return value;
     };
 
     /**
@@ -206,16 +278,7 @@
      * output: a JSON object
      */
     var reassembleJSON = function(html, options) {
-        var emptyString;
-        if (typeof options === "undefined") {
-            emptyString = false;
-        } else {
-            if (typeof options.emptyString !== "undefined") {
-                emptyString = options.emptyString;
-            } else {
-                emptyString = false;
-            }
-        }
+
         var mapChildren = html.children('.hulk-map');
         if (mapChildren.length > 0) {
             return reassembleJSON(mapChildren, options);
@@ -249,37 +312,7 @@
         }
 
         if (html.hasClass('hulk-map-value')) {
-            var value = html.val();
-
-            // XXX: the JSON specification allows for fractions and exponents
-            if (isNumber(value)) {
-                return parseFloat(value);
-            }
-
-            if (value === "true") {
-                return true;
-            }
-            if (value === "false") {
-                return false;
-            }
-
-            /**
-             * Note: there's some data loss here as we cannot detect between
-             * the empty string and null. In theory we could attach a data-*
-             * attribute to the input and use that but you'd still break if the
-             * user voided a field while editing the JSON.
-             *
-             * XXX Probably the best thing to do here is allow the user to
-             * pick what they want (empty string or null) here.
-             */
-            if (value === null || value === "null") {
-                return null;
-            }
-            if (value.length === 0) {
-                return emptyString === true ? "" : null;
-            }
-
-            return html.val();
+            return parseTextInput(html.val(), options);
         }
 
         // hack, merge this with the above conditional

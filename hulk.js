@@ -50,11 +50,21 @@
 
     /**
      * Add a handler to append a new dictionary as HTML to the list
+     *
+     * XXX: consider refactoring this with the function above
      */
     var attachAddKeyValuePairElementHandler = function(button, options) {
         $(button).on('click', function(e) {
             e.preventDefault();
             var elementHTML = createArrayElementHTML({"": ""}, options);
+            $(button).before(elementHTML);
+        });
+    };
+
+    var attachKeyValuePairHandler = function(button, options) {
+        $(button).on('click', function(e) {
+            e.preventDefault();
+            var elementHTML = createKeyValuePairHTML("", "", options);
             $(button).before(elementHTML);
         });
     };
@@ -147,8 +157,9 @@
         mapHTML.addClass('hulk-map');
 
         // ugh, http://stackoverflow.com/q/5467129/329700
+        var key;
         var keys = [];
-        for (var key in map) {
+        for (key in map) {
             if (map.hasOwnProperty(key)) {
                 keys.push(key);
             }
@@ -157,11 +168,16 @@
         keys.sort();
 
         for (var j = 0; j < keys.length; j++) {
-            var key = keys[j];
+            key = keys[j];
             var value = map[key];
             var pair = createKeyValuePairHTML(key, value, options);
             mapHTML.append(pair);
         }
+        var addPairElement = $(document.createElement('button'));
+        addPairElement.addClass('hulk-map-add-pair');
+        addPairElement.text('Add key/value pair');
+        attachKeyValuePairHandler(addPairElement, options);
+        mapHTML.append(addPairElement);
         return mapHTML;
     };
 
@@ -298,6 +314,9 @@
                 var key = $element.children('.hulk-map-key');
                 // XXX if multiple elements have the same key, last one wins.
                 // what should actually be done here? warn?
+                if (key.val() === "") {
+                    return;
+                }
                 d[key.val()] = reassembleJSON(
                     $element.children('.hulk-map-value-container'), options);
             });

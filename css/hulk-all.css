@@ -75,3 +75,27 @@
 
 .hulk-array-element:nth-last-of-type(1) > .hulk-map {
   border-bottom: none; }
+
+.hulk .hulk-save {
+  background-color: #a5750d !important;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#efb73d", endColorstr="#a5750d");
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#efb73d), to(#a5750d));
+  background-image: -moz-linear-gradient(top, #efb73d, #a5750d);
+  background-image: -ms-linear-gradient(top, #efb73d, #a5750d);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #efb73d), color-stop(100%, #a5750d));
+  background-image: -webkit-linear-gradient(top, #efb73d, #a5750d);
+  background-image: -o-linear-gradient(top, #efb73d, #a5750d);
+  background-image: linear-gradient(#efb73d, #a5750d);
+  border-color: #a5750d #a5750d #89610b;
+  color: #fff !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.39);
+  -webkit-font-smoothing: antialiased;
+  min-width: 200px;
+  padding-top: 6px;
+  padding-bottom: 6px; }
+  .hulk .hulk-save:hover {
+    color: #333;
+    text-decoration: none;
+    background-image: linear-gradient(#e0a82e, #966600);
+    cursor: pointer; }

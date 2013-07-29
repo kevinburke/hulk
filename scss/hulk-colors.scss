@@ -54,3 +54,35 @@ $bottom: #eaeaea;
 .hulk-array-element:nth-last-of-type(1) > .hulk-map {
     border-bottom: none;
 }
+
+// XXX lazy
+$top: #efb73d;
+$bottom: #a5750d;
+.hulk .hulk-save {
+  // via http://charliepark.org/bootstrap_buttons/
+  background-color: hsl(41, 85%, 35%) !important;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#efb73d", endColorstr="#a5750d");
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#efb73d), to(#a5750d));
+  background-image: -moz-linear-gradient(top, #efb73d, #a5750d);
+  background-image: -ms-linear-gradient(top, #efb73d, #a5750d);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #efb73d), color-stop(100%, #a5750d));
+  background-image: -webkit-linear-gradient(top, #efb73d, #a5750d);
+  background-image: -o-linear-gradient(top, #efb73d, #a5750d);
+  background-image: linear-gradient(#efb73d, #a5750d);
+  border-color: #a5750d #a5750d hsl(41, 85%, 29%);
+  color: #fff !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.39);
+  -webkit-font-smoothing: antialiased;
+
+  min-width: 200px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+
+  &:hover {
+      color: #333;
+      text-decoration: none;
+      background-image: linear-gradient($top - #0f0f0f, $bottom - #0f0f0f);
+      cursor: pointer;
+  }
+}

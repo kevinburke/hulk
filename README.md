@@ -51,6 +51,9 @@ new objects. This takes a few different values.
     - "no-append" - User can edit keys and values, but can't add or delete nodes
       from the object.
 
+- **emptyString (string)** - Serialize an empty text input field back
+  into JSON using the empty string ("") instead of null. Defaults to `false`.
+
 ## Installation
 
 1. Include the jQuery source on your page

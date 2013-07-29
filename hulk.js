@@ -126,11 +126,20 @@
      * input: a JQuery object (the editor in JSON)
      * output: a JSON object
      */
-    var reassembleJSON = function(html) {
-
+    var reassembleJSON = function(html, options) {
+        var emptyString;
+        if (typeof options === "undefined") {
+            emptyString = false;
+        } else {
+            if (typeof options.emptyString !== "undefined") {
+                emptyString = options.emptyString;
+            } else {
+                emptyString = false;
+            }
+        }
         var mapChildren = html.children('.hulk-map');
         if (mapChildren.length > 0) {
-            return reassembleJSON(mapChildren);
+            return reassembleJSON(mapChildren, options);
         }
 
         var mapItems = html.children('.hulk-map-pair');
@@ -141,20 +150,21 @@
                 var key = $element.children('.hulk-map-key');
                 // XXX if multiple elements have the same key, last one wins.
                 // what should actually be done here? warn?
-                d[key.val()] = reassembleJSON($element.children('.hulk-map-value-container'));
+                d[key.val()] = reassembleJSON(
+                    $element.children('.hulk-map-value-container'), options);
             });
             return d;
         }
 
         var arrayChildren = html.children('.hulk-array');
         if (arrayChildren.length > 0) {
-            return reassembleJSON(arrayChildren);
+            return reassembleJSON(arrayChildren, options);
         }
 
         if (html.hasClass('hulk-array')) {
             var array = [];
             html.children('.hulk-array-element').each(function(index, element) {
-                array.push(reassembleJSON($(element)));
+                array.push(reassembleJSON($(element), options));
             });
             return array;
         }
@@ -183,8 +193,11 @@
              * XXX Probably the best thing to do here is allow the user to
              * pick what they want (empty string or null) here.
              */
-            if (value === null || value === "null" || value.length === 0) {
+            if (value === null || value === "null") {
                 return null;
+            }
+            if (value.length === 0) {
+                return emptyString === true ? "" : null;
             }
 
             return html.val();
@@ -193,14 +206,13 @@
         // hack, merge this with the above conditional
         var valueChild = html.children('.hulk-map-value');
         if (valueChild.length) {
-            return reassembleJSON(valueChild);
+            return reassembleJSON(valueChild, options);
         }
 
         if (html.hasClass('hulk-map-value-container')) {
-            return reassembleJSON(html.children('.hulk-map-value'));
+            return reassembleJSON(html.children('.hulk-map-value'), options);
         }
 
-        console.log("returning nothing");
         return {};
     };
 
@@ -217,7 +229,7 @@
         var html = convertMapToHTML(data, options);
         var button = getSaveButton();
         attachSaveHandler(button, function() {
-            var newData = reassembleJSON($element.children());
+            var newData = reassembleJSON($element.children(), options);
             callback(newData);
         });
         $element.html(html);
@@ -225,7 +237,7 @@
         return $element;
     };
 
-    $.hulkSmash = function(selector) {
-        return reassembleJSON($(selector));
+    $.hulkSmash = function(selector, options) {
+        return reassembleJSON($(selector), options);
     };
 }(jQuery));

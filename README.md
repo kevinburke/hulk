@@ -1,6 +1,8 @@
 # Hulk
 
-Hulk is an in-browser JSON editor.
+Hulk is an in-browser JSON editor. [View an example][example]
+
+ [example]: http://kevinburke.github.io/hulk/example/
 
 ## Usage
 

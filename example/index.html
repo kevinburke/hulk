@@ -63,7 +63,13 @@
             "wins": 48
           }
         ],
-        "name": "Major League Baseball"
+        "name": "Major League Baseball",
+        // this data structure is dumb, but I want to show off nesting a
+        // dictionary inside a dictionary.
+        "meta": {
+          "season": 2013,
+          "sport": "baseball"
+        }
       };
       var prettyPrint = function(data) {
         return JSON.stringify(data, null, '\t');

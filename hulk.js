@@ -7,7 +7,7 @@
      */
     var getSaveButton = function() {
         var button = document.createElement('button');
-        button.setAttribute('id', 'hulk-save');
+        button.setAttribute('class', 'hulk-save');
         button.innerHTML = 'Save';
         return button;
     };

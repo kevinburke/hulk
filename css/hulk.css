@@ -31,7 +31,7 @@
   margin-bottom: 16px; }
 
 .hulk-array-element:nth-last-of-type(1) > .hulk-map {
-  padding-bottom: 6px;
+  padding-bottom: 0;
   margin-bottom: 0; }
 
 #hulk-save {

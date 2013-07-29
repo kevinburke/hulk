@@ -31,7 +31,7 @@
   margin-bottom: 16px; }
 
 .hulk-array-element:nth-last-of-type(1) > .hulk-map {
-  padding-bottom: 6px;
+  padding-bottom: 0;
   margin-bottom: 0; }
 
 #hulk-save {
@@ -62,7 +62,8 @@
 .hulk button {
   border-radius: 3px;
   border: 1px solid #ddd;
-  background-image: linear-gradient(#fafafa, #eaeaea); }
+  background-image: linear-gradient(#fafafa, #eaeaea);
+  padding: 5px 10px; }
   .hulk button:hover {
     background-image: linear-gradient(#ebebeb, #dbdbdb); }
 

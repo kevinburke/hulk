@@ -41,7 +41,8 @@ $spacing: 10px;
 }
 
 .hulk-array-element:nth-last-of-type(1) > .hulk-map {
-    padding-bottom: 6px;
+    // XXX, pick better bottom padding
+    padding-bottom: 0;
     margin-bottom: 0;
 }
 

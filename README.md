@@ -51,7 +51,7 @@ inserted into the DOM based on the selector you give. This argument is required.
 - **options (object)** - A dictionary of optional settings for hulk. The
   possible options are outlined below. This argument is optional.
 
-## Optional settings
+### Optional settings
 
 These are options that you can pass to either `$.hulk` or `$.hulkSmash`.
 
@@ -63,7 +63,8 @@ using the empty string (`""`) instead of `null`. Defaults to `false`.
 
 The following are not yet implemented, but will be soon:
 
-- **collapseAll** - By default, collapse all dictionaries.
+- **depth** - Collapse all dictionaries and lists that are nested deeper than
+  `depth`. `depth=0` will collapse everything.
 
 - **permissions (string)** - Define how customizable and editable the custom JSON
 dictionary is. For example, you may only want to update existing values, not add
@@ -75,7 +76,18 @@ new objects. This takes a few different values.
     - "no-append" - User can edit keys and values, but can't add or delete nodes
       from the object.
 
-## Notes
+### Why?
+
+Editing raw JSON is error-prone and not friendly to non-technical people. This
+makes it easy to edit and serialize JSON. This also makes it easy for
+a programmer and a non-technical user to collaborate.
+
+We also use this tool internally at [Twilio][twilio] to edit configuration
+files.
+
+[twilio]: https://www.twilio.com
+
+### Notes
 
 - Javascript objects do not maintain a sorted order. This means, when
   serializing an object from HTML to JSON, the keys will not be sorted. To

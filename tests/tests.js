@@ -101,11 +101,25 @@ test("nest lists and dictionaries", function() {
 test("empty string option", function() {
     var object = {"b": "", "c": null };
     $.hulk('#hulk', object);
-    console.log("empty string true");
     var e = $.hulkSmash('#hulk', {emptyString: true});
     var expectedResult = {"b": "", "c": ""};
     ok(compare(e, expectedResult), "expected the object " +
         JSON.stringify(expectedResult) + " but got " + JSON.stringify(e));
+});
+
+// Can't run these, because private testing in JS, etc...
+test("it's a dictionary", function() {
+    ok(isDictionary({}) === true, "{} was marked as not a dictionary");
+    ok(isDictionary([]) === false, "[] was marked as a dictionary");
+    ok(isDictionary("foo") === false, "foo was marked as a dictionary");
+    ok(isDictionary({foo: "bar"}) === true, "{foo: 'bar'} was marked as not a dictionary");
+});
+
+test("list of dictionaries", function() {
+    ok(isArrayOfDictionaries([{}, {}]) === true, "[{}, {}]");
+    ok(isArrayOfDictionaries([1, 3]) === false, "[1, 3]");
+    ok(isArrayOfDictionaries([{foo: "bar"}, 3]) === false, "[mixed list]");
+    ok(isArrayOfDictionaries({}) === false, "{}");
 });
 
 compare = function(a, b) {

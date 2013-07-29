@@ -1,5 +1,7 @@
 (function($) {
     var DEFAULT_SEPARATOR = "=>";
+
+
     /**
      * Return a jQuery element for a save button
      */
@@ -9,6 +11,8 @@
         button.innerHTML = 'Save';
         return button;
     };
+
+    /**********************      Handlers      ******************************/
 
     var attachSaveHandler = function(button, callback) {
         $(button).on('click', callback);
@@ -33,8 +37,88 @@
         });
     };
 
+    var attachAddArrayElementHandler = function(button, options) {
+        $(button).on('click', function(e) {
+            e.preventDefault();
+            var elementHTML = createArrayElementHTML("", options);
+            $(button).before(elementHTML);
+        });
+    };
+
+    /**********************      Utilities      ******************************/
+    /**
+     * Detect whether a string is a number-ish value
+     *
+     * @param n string
+     * @return boolean Whether the string is a number
+     */
     var isNumber = function(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
+    };
+
+    /**
+     * Detect whether an object is a dictionary (eg, {}) instead of a list or
+     * another data type
+     *
+     * Implementation taken from goog.typeOf here:
+     * docs.closure-library.googlecode.com/git/closure_goog_base.js.source.html
+     */
+    var isDictionary = function(obj) {
+        return typeof obj === "object" && ! (obj instanceof Array);
+    };
+
+    /**
+     * Detect whether a list is a list of dictionaries
+     *
+     * Of course in Javascript a list can combine any types, in this case we are
+     * strict and care only if the list is made up entirely of dictionaries. You
+     * shouldn't mix types in a list.
+     */
+    var isArrayOfDictionaries = function(list) {
+        try {
+            return list.filter(isDictionary).length === list.length;
+        } catch (TypeError) {
+            return false;
+        }
+    };
+
+    /*****************      Recursive Builder Functions      ******************/
+
+    /**
+     * Create HTML from a JSON array element
+     *
+     * @return the element as HTML, plus whatever is inside it
+     */
+    var createArrayElementHTML = function(element, options) {
+        var elementHTML = $(document.createElement('div'));
+        elementHTML.addClass('hulk-array-element');
+        elementHTML.html(convertMapToHTML(element, options));
+        return elementHTML;
+    };
+
+    var createArrayHTML = function(data, options) {
+        var array = $(document.createElement('div'));
+        array.addClass('hulk-array');
+        for (var i = 0; i < data.length; i++) {
+            var elementHTML = createArrayElementHTML(data[i], options);
+            array.append(elementHTML);
+        }
+        // If it's a list of dictionaries, add an option to add
+        // a dictionary.
+        if (isArrayOfDictionaries(data)) {
+            var addPairElement = $(document.createElement('button'));
+            addPairElement.addClass('hulk-array-add-pair');
+            addPairElement.text('Add key/value pair');
+            array.append(addPairElement);
+        } else {
+            // Otherwise, you can only add new values.
+            var addRowElement = $(document.createElement('button'));
+            addRowElement.addClass('hulk-array-add-row');
+            addRowElement.text('Add element');
+            attachAddArrayElementHandler(addRowElement);
+            array.append(addRowElement);
+        }
+        return array;
     };
 
     /**
@@ -65,18 +149,11 @@
 
         // javascript you're drunk. http://stackoverflow.com/a/4775737/329700
         if (Object.prototype.toString.call(data) === '[object Array]') {
-            var array = $(document.createElement('div'));
-            array.addClass('hulk-array');
-            for (var i = 0; i < data.length; i++) {
-                var element = data[i];
-                var elementHtml = $(document.createElement('div'));
-                elementHtml.addClass('hulk-array-element');
-                elementHtml.html(convertMapToHTML(element, options));
-                array.append(elementHtml);
-            }
-            return array;
+            return createArrayHTML(data, options);
         }
 
+        // Now that we've covered the other cases, only dictionaries should be
+        // left.
         var map = $(document.createElement('div'));
         map.addClass('hulk-map');
 
@@ -218,11 +295,14 @@
         return {};
     };
 
+    /*********************      Exported Functions       **********************/
+
     $.hulk = function(selector, data, callback, options) {
         // get option settings
         var $element = $(selector);
         $element.addClass('hulk');
         if ($element.length === 0) {
+            // XXX console doesn't always exist
             console.error("Attempting to hulk-ify element with selector " +
                 selector + " failed because the element does not exist. " +
                 "Quitting");

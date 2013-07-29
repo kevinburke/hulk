@@ -1,3 +1,19 @@
+module("utilities");
+// Can't run these, because private testing in JS, etc...
+//test("it's a dictionary", function() {
+    //ok(isDictionary({}) === true, "{} was marked as not a dictionary");
+    //ok(isDictionary([]) === false, "[] was marked as a dictionary");
+    //ok(isDictionary("foo") === false, "foo was marked as a dictionary");
+    //ok(isDictionary({foo: "bar"}) === true, "{foo: 'bar'} was marked as not a dictionary");
+//});
+
+//test("list of dictionaries", function() {
+    //ok(isArrayOfDictionaries([{}, {}]) === true, "[{}, {}]");
+    //ok(isArrayOfDictionaries([1, 3]) === false, "[1, 3]");
+    //ok(isArrayOfDictionaries([{foo: "bar"}, 3]) === false, "[mixed list]");
+    //ok(isArrayOfDictionaries({}) === false, "{}");
+//});
+
 module("general", {
     teardown: function() {
         $('#hulk').html('')
@@ -107,20 +123,13 @@ test("empty string option", function() {
         JSON.stringify(expectedResult) + " but got " + JSON.stringify(e));
 });
 
-// Can't run these, because private testing in JS, etc...
-//test("it's a dictionary", function() {
-    //ok(isDictionary({}) === true, "{} was marked as not a dictionary");
-    //ok(isDictionary([]) === false, "[] was marked as a dictionary");
-    //ok(isDictionary("foo") === false, "foo was marked as a dictionary");
-    //ok(isDictionary({foo: "bar"}) === true, "{foo: 'bar'} was marked as not a dictionary");
-//});
-
-//test("list of dictionaries", function() {
-    //ok(isArrayOfDictionaries([{}, {}]) === true, "[{}, {}]");
-    //ok(isArrayOfDictionaries([1, 3]) === false, "[1, 3]");
-    //ok(isArrayOfDictionaries([{foo: "bar"}, 3]) === false, "[mixed list]");
-    //ok(isArrayOfDictionaries({}) === false, "{}");
-//});
+test("append element has correct text", function() {
+    var object = {"foo": {"bar": "baz"}};
+    $.hulk('#hulk', object);
+    var button = $('#hulk .hulk-map-add-pair').first();
+    ok(button.text() === "Add new key/value pair to foo",
+        "expected custom message but got " + button.text());
+});
 
 compare = function(a, b) {
     return JSON.stringify(a) === JSON.stringify(b);

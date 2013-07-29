@@ -23,3 +23,6 @@
 .hulk-array-element > .hulk-map {
   padding-bottom: 6px;
   margin-bottom: 16px; }
+
+#hulk-save {
+  margin-left: 30px; }

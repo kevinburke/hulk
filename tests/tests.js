@@ -108,19 +108,19 @@ test("empty string option", function() {
 });
 
 // Can't run these, because private testing in JS, etc...
-test("it's a dictionary", function() {
-    ok(isDictionary({}) === true, "{} was marked as not a dictionary");
-    ok(isDictionary([]) === false, "[] was marked as a dictionary");
-    ok(isDictionary("foo") === false, "foo was marked as a dictionary");
-    ok(isDictionary({foo: "bar"}) === true, "{foo: 'bar'} was marked as not a dictionary");
-});
+//test("it's a dictionary", function() {
+    //ok(isDictionary({}) === true, "{} was marked as not a dictionary");
+    //ok(isDictionary([]) === false, "[] was marked as a dictionary");
+    //ok(isDictionary("foo") === false, "foo was marked as a dictionary");
+    //ok(isDictionary({foo: "bar"}) === true, "{foo: 'bar'} was marked as not a dictionary");
+//});
 
-test("list of dictionaries", function() {
-    ok(isArrayOfDictionaries([{}, {}]) === true, "[{}, {}]");
-    ok(isArrayOfDictionaries([1, 3]) === false, "[1, 3]");
-    ok(isArrayOfDictionaries([{foo: "bar"}, 3]) === false, "[mixed list]");
-    ok(isArrayOfDictionaries({}) === false, "{}");
-});
+//test("list of dictionaries", function() {
+    //ok(isArrayOfDictionaries([{}, {}]) === true, "[{}, {}]");
+    //ok(isArrayOfDictionaries([1, 3]) === false, "[1, 3]");
+    //ok(isArrayOfDictionaries([{foo: "bar"}, 3]) === false, "[mixed list]");
+    //ok(isArrayOfDictionaries({}) === false, "{}");
+//});
 
 compare = function(a, b) {
     return JSON.stringify(a) === JSON.stringify(b);

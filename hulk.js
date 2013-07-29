@@ -55,6 +55,7 @@
         }
 
         var type = typeof data;
+        // typeof null === "object", so we compare directly against null
         if (type === "string" || type === "number" || type === "boolean" || data === null) {
             var valueInput = $(document.createElement('input'));
             valueInput.addClass('hulk-map-value');
@@ -62,6 +63,7 @@
             return valueInput;
         }
 
+        // javascript you're drunk. http://stackoverflow.com/a/4775737/329700
         if (Object.prototype.toString.call(data) === '[object Array]') {
             var array = $(document.createElement('div'));
             array.addClass('hulk-array');

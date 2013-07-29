@@ -248,6 +248,29 @@
     };
 
     /**
+     * Converts a simple JSON value (string, boolean, number) into HTML
+     *
+     * @return jQuery
+     */
+    var createInputHTML = function(input, type) {
+        var maxInputTextLength = 80;
+        var valueInput;
+        if (type === "string" && input.length > maxInputTextLength) {
+            valueInput = $(document.createElement('textarea'));
+            // XXX Make this configurable?
+            valueInput.attr('rows', 7);
+            valueInput.attr('cols', 80);
+            valueInput.addClass('hulk-input-textarea');
+        } else {
+            valueInput = $(document.createElement('input'));
+            valueInput.addClass('hulk-input-text');
+        }
+        valueInput.addClass('hulk-map-value');
+        valueInput.attr('value', input);
+        return valueInput;
+    };
+
+    /**
      * Convert a JSON object into HTML
      *
      * This should handle most JSON objects, per the specification here:
@@ -260,24 +283,10 @@
      * @param string optionalKey for dictionary values, pass in the associated key
      */
     var convertJSONToHTML = function(data, options, optionalKey) {
-        var maxInputTextLength = 80;
         var type = typeof data;
         // typeof null === "object", so we compare directly against null
         if (type === "string" || type === "number" || type === "boolean" || data === null) {
-            var valueInput;
-            if (type === "string" && data.length > maxInputTextLength) {
-                valueInput = $(document.createElement('textarea'));
-                // XXX Make this configurable?
-                valueInput.attr('rows', 7);
-                valueInput.attr('cols', 80);
-                valueInput.addClass('hulk-input-textarea');
-            } else {
-                valueInput = $(document.createElement('input'));
-                valueInput.addClass('hulk-input-text');
-            }
-            valueInput.addClass('hulk-map-value');
-            valueInput.attr('value', data);
-            return valueInput;
+            return createInputHTML(data, type);
         }
 
         // XXX: the JSON specification allows for fractions and exponents.

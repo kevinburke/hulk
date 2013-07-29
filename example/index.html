@@ -6,10 +6,38 @@
 <!--<link rel='stylesheet' id='flatui-bootstrap-responsive.css-css'  href='bootstrap-responsive.min.css' type='text/css' media='all' />-->
     <link rel="stylesheet" type="text/css" href="../css/hulk.css" />
     <link rel="stylesheet" type="text/css" href="../css/hulk-colors.css" />
+    <link rel="stylesheet" type="text/css" href="codemirror-3.15/lib/codemirror.css" />
+    <style>
+      body {
+        font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+      }
+
+      .CodeMirror {
+        font-family: Consolas, "Andale Mono", Monaco, monospace;
+        min-height: 375px;
+      }
+    </style>
     <script src="../tests/jquery.min.js"></script>
     <script src="../hulk.js"></script>
+    <script src="codemirror-compressed.js"></script>
+  </head>
+  <body>
+    <h1>HULK</h1>
+
+    <div class="row">
+      <div class="span12">
+        <h2>Here's some JSON</h2>
+        <textarea id="code-mirror"></textarea>
+      </div>
+    </div>
+
+    <h2>Here's the same JSON, represented as HTML</h2>
+    <p>Make some changes to the boxes below. Then click the "Save" button and watch the JSON reload with new values</p>
+    <div id="hulk">
+
+    </div>
+
     <script>
-      $(function() {
       var d = {
         "teams": [
           {
@@ -32,31 +60,29 @@
         ],
         "name": "Major League Baseball"
       };
-
-        
+      var prettyPrint = function(data) {
+        return JSON.stringify(data, null, '\t');
+      };
+      $('#code-mirror').text(prettyPrint(d));
+      var codeMirror = CodeMirror.fromTextArea(
+        document.getElementById('code-mirror'),
+        {
+          lineNumbers: true,
+          readOnly: "nocursor",
+          mode: {
+            name: "javascript",
+            json: true
+          }
+        }
+      );
+      $(function() {
         $.hulk('#hulk', d, function(data) {
-          console.log(data);
+            codeMirror.setValue(prettyPrint(data));
           }, {
-          'separator': '==>'
-        });
-
-        // var e = $.hulkSmash('#hulk');
-        // console.log("\n\nFinal value is:");
-        // console.log(d);
-        // console.log(e);
-        // console.log(JSON.stringify(d) === JSON.stringify(e));
+            'separator': '==>'
+          }
+        );
       });
     </script>
-  </head>
-  <body>
-    <h1>HULK</h1>
-    <div id="hulk">
-
-    </div>
-
-    <div class="row">
-      <div class="span12">
-      </div>
-    </div>
   </body>
 </html>

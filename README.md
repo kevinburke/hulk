@@ -34,10 +34,20 @@ inserted into the DOM based on the selector you give. This argument is required.
   the data and pass it as an argument to the function you provide. This argument
   is optional.
 
-- **options (object)** - A dictionary of optional settings for hulk. This
-  argument is optional.
+- **options (object)** - A dictionary of optional settings for hulk. The
+  possible options are outlined below. This argument is optional.
+
+The `$.hulkSmash` function takes the following arguments in this order:
+
+- **selector (string)** - Any valid jQuery selector. The input nodes will be
+inserted into the DOM based on the selector you give. This argument is required.
+
+- **options (object)** - A dictionary of optional settings for hulk. The
+  possible options are outlined below. This argument is optional.
 
 ## Optional settings
+
+These are options that you can pass to either `$.hulk` or `$.hulkSmash`.
 
 - **separator (string)** - Define a custom separator between keys and values. By
 default, the separator is "=>".
@@ -47,9 +57,12 @@ dictionary is. For example, you may only want to update existing values, not add
 new objects. This takes a few different values.
 
     - "all" - allow the user to edit everything. This is the default.
-    - "values-only" - only allow the user to edit the leaf nodes
+    - "values-only" - only allow the user to edit the leaf nodes. Keys cannot be
+      added or modified.
     - "no-append" - User can edit keys and values, but can't add or delete nodes
       from the object.
+
+This function is currently unimplemented.
 
 - **emptyString (string)** - Serialize an empty text input field back into JSON
 using the empty string (`""`) instead of `null`. Defaults to `false`.

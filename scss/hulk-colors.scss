@@ -1,3 +1,12 @@
+.hulk, .hulk-map-key, .hulk-map-value, .hulk button {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+.hulk-map-key, .hulk-map-value {
+    padding: 7px 10px;
+}
+
 .hulk-map-key {
     font-weight: bold;
 }
@@ -7,9 +16,17 @@
     border: 1px solid #ccc;
 }
 
-.hulk-array-element > input {
-    border: 1px solid blue;
+.hulk-input-textarea {
+    resize: none;
+    vertical-align: top;
+
+    // not sure why, top of textarea is 4px higher than top of input.
+    margin-top: 4px;
 }
+
+/*.hulk-array-element > input {*/
+    /*border: 1px solid blue;*/
+/*}*/
 
 // XXX pick better values here.
 $top: #fafafa;
@@ -33,11 +50,6 @@ $bottom: #eaeaea;
     border-bottom: 1px solid #ccc;
 }
 
-/*
- * The last child is usually, but not always, the button. Need a better way to
- * do this, maybe just give up on the visual separator.
- */
-.hulk-array-element:nth-last-child(2) > .hulk-map {
+.hulk-array-element:nth-last-of-type(1) > .hulk-map {
     border-bottom: none;
 }
-

@@ -5,8 +5,14 @@
   padding: 4px 6px;
   margin: 0 10px 10px 10px; }
 
+.hulk-map-add-pair, .hulk-array-add-row {
+  margin-left: 10px; }
+
 .hulk-map-pair, .hulk-array {
   margin-left: 30px; }
+
+.hulk-map-add-pair {
+  margin-left: 40px; }
 
 .hulk-separator {
   position: relative;
@@ -24,8 +30,19 @@
   padding-bottom: 6px;
   margin-bottom: 16px; }
 
+.hulk-array-element:nth-last-of-type(1) > .hulk-map {
+  padding-bottom: 6px;
+  margin-bottom: 0; }
+
 #hulk-save {
   margin-left: 30px; }
+
+.hulk, .hulk-map-key, .hulk-map-value, .hulk button {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px; }
+
+.hulk-map-key, .hulk-map-value {
+  padding: 7px 10px; }
 
 .hulk-map-key {
   font-weight: bold; }
@@ -34,9 +51,14 @@
   border-radius: 3px;
   border: 1px solid #ccc; }
 
-.hulk-array-element > input {
-  border: 1px solid blue; }
+.hulk-input-textarea {
+  resize: none;
+  vertical-align: top;
+  margin-top: 4px; }
 
+/*.hulk-array-element > input {*/
+/*border: 1px solid blue;*/
+/*}*/
 .hulk button {
   border-radius: 3px;
   border: 1px solid #ddd;
@@ -50,9 +72,5 @@
 .hulk-array-element > .hulk-map {
   border-bottom: 1px solid #ccc; }
 
-/*
- * The last child is usually, but not always, the button. Need a better way to
- * do this, maybe just give up on the visual separator.
- */
-.hulk-array-element:nth-last-child(2) > .hulk-map {
+.hulk-array-element:nth-last-of-type(1) > .hulk-map {
   border-bottom: none; }

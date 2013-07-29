@@ -5,8 +5,14 @@
   padding: 4px 6px;
   margin: 0 10px 10px 10px; }
 
+.hulk-map-add-pair, .hulk-array-add-row {
+  margin-left: 10px; }
+
 .hulk-map-pair, .hulk-array {
   margin-left: 30px; }
+
+.hulk-map-add-pair {
+  margin-left: 40px; }
 
 .hulk-separator {
   position: relative;
@@ -23,6 +29,10 @@
 .hulk-array-element > .hulk-map {
   padding-bottom: 6px;
   margin-bottom: 16px; }
+
+.hulk-array-element:nth-last-of-type(1) > .hulk-map {
+  padding-bottom: 6px;
+  margin-bottom: 0; }
 
 #hulk-save {
   margin-left: 30px; }

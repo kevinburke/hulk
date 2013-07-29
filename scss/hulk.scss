@@ -1,13 +1,24 @@
+$left-indent: 30px;
+$spacing: 10px;
+
 /**
  * This file contains layout instructions for Hulk text inputs
  */
 .hulk-map-key, .hulk-map-value {
     padding: 4px 6px;
-    margin: 0 10px 10px 10px;
+    margin: 0 $spacing 10px $spacing;
+}
+
+.hulk-map-add-pair, .hulk-array-add-row {
+    margin-left: $spacing;
 }
 
 .hulk-map-pair, .hulk-array {
-    margin-left: 30px;
+    margin-left: $left-indent;
+}
+
+.hulk-map-add-pair {
+    margin-left: $left-indent + $spacing;
 }
 
 .hulk-separator {
@@ -18,7 +29,7 @@
 
 .hulk-collapse-item {
     margin-bottom: 10px;
-    margin-left: 10px;
+    margin-left: $spacing;
 }
 
 /**
@@ -29,6 +40,11 @@
     margin-bottom: 16px;
 }
 
+.hulk-array-element:nth-last-of-type(1) > .hulk-map {
+    padding-bottom: 6px;
+    margin-bottom: 0;
+}
+
 #hulk-save {
-    margin-left: 30px;
+    margin-left: $left-indent;
 }

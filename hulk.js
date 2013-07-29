@@ -139,7 +139,7 @@
         separatorElement.text(separator);
         pair.append(separatorElement);
 
-        var valueHTML = convertMapToHTML(value, options);
+        var valueHTML = convertMapToHTML(value, options, key);
         valueHTML.addClass('hulk-map-value-container');
         if (valueHTML.children('.hulk-map-pair, .hulk-array-element').length > 0) {
             var button = $(document.createElement('button'));
@@ -193,7 +193,31 @@
         return elementHTML;
     };
 
-    var createArrayHTML = function(data, options) {
+    var getAddElementText = function(elementName, optionalKey) {
+        var type = typeof optionalKey;
+        var maxKeyLength = 30;
+        if (type === "undefined" || type !== "string") {
+            return ["Add new ", elementName].join("");
+        }
+        if (optionalKey.length > maxKeyLength) {
+            return [
+                "Add new ",
+                elementName,
+                " to ",
+                optionalKey.substring(0, maxKeyLength),
+                "..."
+            ].join("");
+        } else {
+            return [
+                "Add new ",
+                elementName,
+                " to ",
+                optionalKey
+            ].join("");
+        }
+    };
+
+    var createArrayHTML = function(data, options, optionalKey) {
         var array = $(document.createElement('div'));
         array.addClass('hulk-array');
         for (var i = 0; i < data.length; i++) {
@@ -202,17 +226,20 @@
         }
         // If it's a list of dictionaries, add an option to add
         // a dictionary.
+        var text;
         if (isArrayOfDictionaries(data)) {
             var addPairElement = $(document.createElement('button'));
             addPairElement.addClass('hulk-array-add-pair');
-            addPairElement.text('Add key/value pair');
+            text = getAddElementText("key/value pair", optionalKey);
+            addPairElement.text(text);
             attachAddKeyValuePairElementHandler(addPairElement, options);
             array.append(addPairElement);
         } else {
             // Otherwise, you can only add new values.
             var addRowElement = $(document.createElement('button'));
             addRowElement.addClass('hulk-array-add-row');
-            addRowElement.text('Add element');
+            text = getAddElementText("element", optionalKey);
+            addRowElement.text(text);
             attachAddArrayElementHandler(addRowElement, options);
             array.append(addRowElement);
         }
@@ -226,12 +253,27 @@
      * http://www.json.org/
      *
      * This function calls itself recursively
+     *
+     * @param object data the JSON object to convert
+     * @param object|undefined options the user specified options
+     * @param string optionalKey for dictionary values, pass in the associated key
      */
-    var convertMapToHTML = function(data, options) {
+    var convertMapToHTML = function(data, options, optionalKey) {
+        var maxInputTextLength = 80;
         var type = typeof data;
         // typeof null === "object", so we compare directly against null
         if (type === "string" || type === "number" || type === "boolean" || data === null) {
-            var valueInput = $(document.createElement('input'));
+            var valueInput;
+            if (type === "string" && data.length > maxInputTextLength) {
+                valueInput = $(document.createElement('textarea'));
+                // XXX Make this configurable?
+                valueInput.attr('rows', 7);
+                valueInput.attr('cols', 80);
+                valueInput.addClass('hulk-input-textarea');
+            } else {
+                valueInput = $(document.createElement('input'));
+                valueInput.addClass('hulk-input-text');
+            }
             valueInput.addClass('hulk-map-value');
             valueInput.attr('value', data);
             return valueInput;
@@ -242,7 +284,7 @@
 
         // javascript you're drunk. http://stackoverflow.com/a/4775737/329700
         if (Object.prototype.toString.call(data) === '[object Array]') {
-            return createArrayHTML(data, options);
+            return createArrayHTML(data, options, optionalKey);
         }
 
         // Now that we've covered the other cases, only dictionaries should be

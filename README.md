@@ -40,7 +40,7 @@ inserted into the DOM based on the selector you give. This argument is required.
 ## Optional settings
 
 - **separator (string)** - Define a custom separator between keys and values. By
-default, the separator looks like "=>".
+default, the separator is "=>".
 
 - **permissions (string)** - Define how customizable and editable the custom JSON
 dictionary is. For example, you may only want to update existing values, not add
@@ -51,8 +51,25 @@ new objects. This takes a few different values.
     - "no-append" - User can edit keys and values, but can't add or delete nodes
       from the object.
 
-- **emptyString (string)** - Serialize an empty text input field back
-  into JSON using the empty string ("") instead of null. Defaults to `false`.
+- **emptyString (string)** - Serialize an empty text input field back into JSON
+using the empty string (`""`) instead of `null`. Defaults to `false`.
+
+## Notes
+
+- Javascript objects do not maintain a sorted order. This means, when
+  serializing an object from HTML to JSON, the keys will not be sorted. To
+  maintain some semblance of order, keys are presented on the page in
+  alphabetical order when serializing from JSON to HTML (this is something we
+  can control). Consider sorting keys once they are received on the server or
+  whichever sane language is dealing with your new JSON object.
+
+- There is inherent uncertainty in using text inputs for data entry. Does the
+  entry "5.5" represent the number 5.5 or the string "5.5"? In this case we do
+  some basic parsing.
+
+    - if the value looks like a number, it's converted to a number
+    - if the value looks like a boolean ("true" or "false"), it's converted to a boolean
+    - if the value is empty, or the word "null", it's converted to the null value.
 
 ## Installation
 

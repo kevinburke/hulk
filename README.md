@@ -63,7 +63,12 @@ using the empty string (`""`) instead of `null`. Defaults to `false`.
 
 - **depth** - Collapse all dictionaries and lists that are nested deeper than
   `depth`. `depth=0` will collapse everything. `depth=-1` will expand
-  everything. The default is to show all JSON
+  everything. The default is to show all JSON.
+
+- **smartParsing** - Try to parse text inputs into matching data types, eg turn
+the string "5.53" into the number 5.53 when serializing into JSON, and turn
+"true" into true. If set to false, all objects will be serialized as strings.
+The default is ``true``.
 
 The following are not yet implemented, but will be soon:
 

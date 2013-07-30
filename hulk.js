@@ -403,6 +403,10 @@
         }
 
         if (html.hasClass('hulk-map-value')) {
+            var smartParsing = getOptionOrDefault(options, "smartParsing", true);
+            if (!smartParsing) {
+                return html.val();
+            }
             return parseTextInput(html.val(), options);
         }
 

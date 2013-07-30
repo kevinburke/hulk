@@ -131,6 +131,14 @@ test("append element has correct text", function() {
         "expected custom message but got " + button.text());
 });
 
+test("smart parsing option", function() {
+    var object = {"foo": true, "baz": 5.78};
+    $.hulk('#hulk', object);
+    var e = $.hulkSmash('#hulk', {smartParsing: false});
+    ok(e['foo'] === "true", "expected the string 'true' but got " + e['foo']);
+    ok(e['baz'] === "5.78", "expected the string '5.78' but got " + e['foo']);
+});
+
 compare = function(a, b) {
     return JSON.stringify(a) === JSON.stringify(b);
 }

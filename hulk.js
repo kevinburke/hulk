@@ -125,6 +125,7 @@
     var createKeyValuePairHTML = function(key, value, options) {
         var separator = getOptionOrDefault(
             options, "separator", DEFAULT_SEPARATOR);
+        var depth = getOptionOrDefault(options, "depth", -1);
 
         var pair = $(document.createElement('div'));
         pair.addClass('hulk-map-pair');
@@ -139,14 +140,27 @@
         separatorElement.text(separator);
         pair.append(separatorElement);
 
-        var valueHTML = convertJSONToHTML(value, options, key);
+        var optionsCopy = jQuery.extend(true, {}, options);
+        if (depth > 0) {
+            optionsCopy.depth = depth - 1;
+        }
+
+        var valueHTML = convertJSONToHTML(value, optionsCopy, key);
         valueHTML.addClass('hulk-map-value-container');
         if (valueHTML.children('.hulk-map-pair, .hulk-array-element').length > 0) {
             var button = $(document.createElement('button'));
             button.addClass('hulk-collapse-item');
-            button.text("Collapse");
-            attachCollapseHandler(button);
-            pair.append(button);
+            if (depth !== 0) {
+                button.text("Collapse");
+                attachCollapseHandler(button);
+                pair.append(button);
+            } else {
+                button.addClass('collapsed');
+                button.text("Expand");
+                valueHTML.hide();
+                attachCollapseHandler(button);
+                pair.append(button);
+            }
         }
         pair.append(valueHTML);
         return pair;

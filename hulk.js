@@ -1,7 +1,6 @@
 (function($) {
     var DEFAULT_SEPARATOR = "=>";
 
-
     /**
      * Return a jQuery element for a save button
      */

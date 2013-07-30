@@ -15,6 +15,7 @@ module.exports = function(grunt) {
                 mangle: {
                     except: ['jQuery']
                 },
+                banner: '/* Hulk v0.1 | (c) 2013 Kevin Burke | License: MIT */\n',
                 compress: true
             },
             my_target: {

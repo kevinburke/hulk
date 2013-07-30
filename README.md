@@ -67,7 +67,7 @@ using the empty string (`""`) instead of `null`. Defaults to `false`.
 
 - **smartParsing** - Try to parse text inputs into matching data types, eg turn
 the string "5.53" into the number 5.53 when serializing into JSON, and turn
-"true" into true. If set to false, all objects will be serialized as strings.
+"true" into true. If set to `false`, all objects will be serialized as strings.
 The default is ``true``.
 
 The following are not yet implemented, but will be soon:
@@ -109,6 +109,9 @@ files.
     - if the value looks like a number, it's converted to a number
     - if the value looks like a boolean ("true" or "false"), it's converted to a boolean
     - if the value is empty, or the word "null", it's converted to the null value.
+
+    That said, if you set the `smartParsing` option to `false`, all inputs will
+    be serialized and returned as strings.
 
 ## Installation
 

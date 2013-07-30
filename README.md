@@ -61,10 +61,11 @@ default, the separator is "=>".
 - **emptyString (string)** - Serialize an empty text input field back into JSON
 using the empty string (`""`) instead of `null`. Defaults to `false`.
 
-The following are not yet implemented, but will be soon:
-
 - **depth** - Collapse all dictionaries and lists that are nested deeper than
-  `depth`. `depth=0` will collapse everything.
+  `depth`. `depth=0` will collapse everything. `depth=-1` will expand
+  everything. The default is to show all JSON
+
+The following are not yet implemented, but will be soon:
 
 - **permissions (string)** - Define how customizable and editable the custom JSON
 dictionary is. For example, you may only want to update existing values, not add

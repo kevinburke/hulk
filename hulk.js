@@ -279,7 +279,7 @@
             valueInput.addClass('hulk-input-text');
         }
         valueInput.addClass('hulk-map-value');
-        valueInput.attr('value', input);
+        valueInput.val(input);
         return valueInput;
     };
 

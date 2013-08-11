@@ -5,4 +5,5 @@ pages:
 	git checkout master
 
 authors:
-	git log --raw | grep "^Author: " | sort | uniq | cut -d ' ' -f2- > AUTHORS.md
+	echo "Authors\n=======\n" > AUTHORS.md
+	git log --raw | grep "^Author: " | sort | uniq | cut -d ' ' -f2- | sed 's/^/- /' >> AUTHORS.md

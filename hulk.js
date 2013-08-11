@@ -436,14 +436,18 @@
             return;
         }
         var html = convertJSONToHTML(data, options);
-        var button = getSaveButton();
-        attachSaveHandler(button, function(event) {
-            var newData = reassembleJSON($element.children(), options);
-            callback(newData);
-            event.preventDefault();
-        });
         $element.html(html);
-        $element.append(button);
+
+        var showSaveButton = getOptionOrDefault(options, "showSaveButton", true);
+        if (showSaveButton) {
+            var button = getSaveButton();
+            attachSaveHandler(button, function(event) {
+                var newData = reassembleJSON($element.children(), options);
+                callback(newData);
+                event.preventDefault();
+            });
+            $element.append(button);
+        }
         return $element;
     };
 

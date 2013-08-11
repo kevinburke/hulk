@@ -139,6 +139,26 @@ test("smart parsing option", function() {
     ok(e['baz'] === "5.78", "expected the string '5.78' but got " + e['foo']);
 });
 
+test("showSaveButton = false hides the save button", function() {
+    var object = {"foo": true, "baz": 5.78};
+    $.hulk('#hulk', object, null, {showSaveButton: false});
+    ok($('.hulk-save').length === 0);
+});
+
+test("generates warning", function() {
+    var tmp = console.warn;
+    var foo = '';
+    console.warn = function(text) {
+        foo = text;
+    };
+    $.hulk('#hulk', {}, {showSaveButton: false});
+    var expected = "Dictionary {\"showSaveButton\":false} passed " +
+            "as the callback (3rd) argument, probably meant to pass it " +
+            "as the options (4th) argument"
+    ok(foo === expected, "expected " + expected + " but got " + foo);
+    console.warn = tmp;
+});
+
 compare = function(a, b) {
     return JSON.stringify(a) === JSON.stringify(b);
 }

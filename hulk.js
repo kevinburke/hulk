@@ -1,4 +1,15 @@
 (function($) {
+    // ie hack, http://stackoverflow.com/a/10183573/329700
+    if(!(window.console && console.log)) {
+      console = {
+        log: function(){},
+        debug: function(){},
+        info: function(){},
+        warn: function(){},
+        error: function(){}
+      };
+    }
+
     var DEFAULT_SEPARATOR = "=>";
 
     /**
@@ -425,6 +436,11 @@
     /*********************      Exported Functions       **********************/
 
     $.hulk = function(selector, data, callback, options) {
+        if (isDictionary(callback)) {
+            console.warn("Dictionary " + JSON.stringify(callback) + " passed " +
+                "as the callback (3rd) argument, probably meant to pass it " +
+                "as the options (4th) argument");
+        };
         // get option settings
         var $element = $(selector);
         $element.addClass('hulk');

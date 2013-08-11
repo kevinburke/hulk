@@ -437,9 +437,10 @@
         }
         var html = convertJSONToHTML(data, options);
         var button = getSaveButton();
-        attachSaveHandler(button, function() {
+        attachSaveHandler(button, function(event) {
             var newData = reassembleJSON($element.children(), options);
             callback(newData);
+            event.preventDefault();
         });
         $element.html(html);
         $element.append(button);

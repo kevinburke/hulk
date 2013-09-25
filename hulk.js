@@ -285,12 +285,25 @@
             valueInput.attr('rows', 7);
             valueInput.attr('cols', 80);
             valueInput.addClass('hulk-input-textarea');
+        } else if (type === "boolean") {
+            valueInput = $(document.createElement('select'));
+            var trueOption = $(document.createElement('option'));
+            trueOption.attr('value', 'true').text('true');
+            var falseOption = $(document.createElement('option'));
+            falseOption.attr('value', 'false').text('false');
+            valueInput.append(trueOption);
+            valueInput.append(falseOption);
+            valueInput.addClass('hulk-input-select');
         } else {
             valueInput = $(document.createElement('input'));
             valueInput.addClass('hulk-input-text');
         }
         valueInput.addClass('hulk-map-value');
-        valueInput.val(input);
+        if (type === "boolean") {
+            valueInput.val(input.toString());
+        } else {
+            valueInput.val(input);
+        }
         return valueInput;
     };
 

@@ -145,7 +145,7 @@
 
         var valuesOnly = getOptionOrDefault(options, "permissions", []);
 
-        if ($.inArray("no-append", valuesOnly) === 0) {
+        if ($.inArray("values-only", valuesOnly) !== -1) {
             keyHTML.prop("readonly", true);
             keyHTML.css("border", "0px");
         }
@@ -221,7 +221,7 @@
 
         var noAppend = getOptionOrDefault(options, "permissions", []);
 
-        if ($.inArray("no-append", noAppend) === 0) {
+        if ($.inArray("no-append", noAppend) !== -1) {
             return mapHTML;
         }
 

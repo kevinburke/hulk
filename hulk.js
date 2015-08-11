@@ -142,6 +142,15 @@
 
         var keyHTML = $(document.createElement('input'));
         keyHTML.addClass('hulk-map-key');
+
+        var valuesOnly = getOptionOrDefault(options, "permissions", []);
+
+        if ($.inArray("no-append", valuesOnly) === 0) {
+            keyHTML.prop("readonly", true);
+            keyHTML.css("border", "0px");
+        }
+
+
         keyHTML.attr('value', key);
         pair.append(keyHTML);
 
@@ -156,20 +165,27 @@
         }
 
         var valueHTML = convertJSONToHTML(value, optionsCopy, key);
+        var hideToggle = getOptionOrDefault(options, "permissions", []);
+
         valueHTML.addClass('hulk-map-value-container');
         if (valueHTML.children('.hulk-map-pair, .hulk-array-element').length > 0) {
             var button = $(document.createElement('button'));
             button.addClass('hulk-collapse-item');
             if (depth !== 0) {
                 button.text("Collapse");
+
                 attachCollapseHandler(button);
-                pair.append(button);
+                if ($.inArray("hide-toggle", hideToggle) === -1) {
+                    pair.append(button);
+                }
             } else {
                 button.addClass('collapsed');
                 button.text("Expand");
                 valueHTML.hide();
                 attachCollapseHandler(button);
-                pair.append(button);
+                if ($.inArray("hide-toggle", hideToggle) === -1) {
+                    pair.append(button);
+                }
             }
         }
         pair.append(valueHTML);
@@ -202,6 +218,13 @@
         var text = getAddElementText("key/value pair", optionalKey);
         addPairElement.text(text);
         attachKeyValuePairHandler(addPairElement, options);
+
+        var noAppend = getOptionOrDefault(options, "permissions", []);
+
+        if ($.inArray("no-append", noAppend) === 0) {
+            return mapHTML;
+        }
+
         mapHTML.append(addPairElement);
         return mapHTML;
     };

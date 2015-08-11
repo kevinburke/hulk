@@ -73,11 +73,9 @@ serialized as strings. The default is ``true``.
 - **showSaveButton (boolean)** - Whether to show the "Save" button. The default
 is to show the button.
 
-The following are not yet implemented, but will be soon:
-
-- **permissions (string)** - Define how customizable and editable the custom JSON
+- **permissions (array of strings)** - Define how customizable and editable the custom JSON
 dictionary is. For example, you may only want to update existing values, not add
-new objects. This takes a few different values.
+new objects. This takes a few different values
 
     - "all" - allow the user to edit everything. This is the default.
     - "values-only" - only allow the user to edit the leaf nodes. Keys cannot be
